@@ -1,8 +1,11 @@
 const os = require('os');
 const http = require('http');
+require('dotenv').config();
+
+const PORT = process.env.PORT || 3000;
 
 function handleRequest(req, res) {
-  res.write(`Hi there! I'm being served from ${os.hostname()}`);
+  res.write(`Hi there! I'm being served from ${os.hostname()} port ${PORT}`);
   res.end();
 }
 
@@ -13,7 +16,7 @@ module.exports = { server, handleRequest };
 
 // Start the server if not in test mode
 if (require.main === module) {
-  server.listen(3000, () => {
-    console.log('Server is running on port 3000');
+  server.listen(PORT, () => {
+    console.log('Server is running on port ${PORT}');
   });
 }
