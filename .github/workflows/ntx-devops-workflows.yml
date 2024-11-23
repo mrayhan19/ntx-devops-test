@@ -23,9 +23,17 @@ jobs:
 
   build_oci_image:
 
+    needs: [build_test]
+
     runs-on: ubuntu-latest
 
     steps:
     - uses: actions/checkout@v4
     - name: Build Docker OCI Image
-      run: docker build . --file docker/Dockerfile --tag ntx-app:${{ github.sha }} && docker images
+      run: |
+        SHORT_SHA=$(echo "${GITHUB_SHA}" | cut -c1-6)
+        docker build . --file docker/Dockerfile --tag ntx-app:$SHORT_SHA
+      env:
+        GITHUB_SHA: ${{ github.sha }}
+    - name: Check Docker OCI Image
+      run: dokcer images | grep ntx-app
