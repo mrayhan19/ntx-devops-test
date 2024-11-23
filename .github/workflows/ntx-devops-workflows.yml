@@ -1,21 +1,13 @@
-# This workflow will do a clean installation of node dependencies, cache/restore them, build the source code and run tests across different versions of node
-# For more information see: https://docs.github.com/en/actions/automating-builds-and-tests/building-and-testing-nodejs
-
-name: build and test
+name: ntx-devops-test-workflow
 
 on:
   push:
     branches: [ "feature" ]
 
 jobs:
-  build:
+  build_test:
 
     runs-on: ubuntu-latest
-
-#    strategy:
-#      matrix:
-#        node-version: [18.x]
-        # See supported Node.js release schedule at https://nodejs.org/en/about/releases/
 
     steps:
     - uses: actions/checkout@v4
@@ -28,3 +20,12 @@ jobs:
     - run: npm run build --if-present
     - run: npm install chai@4.3.7
     - run: npm test
+
+  build_oci_image:
+
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v4
+    - name: Build Docker OCI Image
+      run: docker build . --file docker/Dockerfile --tag ntx-app:${{ github.sha }} && docker images
