@@ -36,4 +36,4 @@ jobs:
       env:
         GITHUB_SHA: ${{ github.sha }}
     - name: Check Docker OCI Image
-      run: dokcer images | grep ntx-app
+      run: docker images | grep ntx-app
