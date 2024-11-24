@@ -39,5 +39,5 @@ jobs:
         GITHUB_SHA: ${{ github.sha }}
     - name: Check Docker OCI Image
       run: |
-        echo $APP_IMAGE
-        docker images
+        echo $APP_NAME
+        docker images | grep $APP_NAME
