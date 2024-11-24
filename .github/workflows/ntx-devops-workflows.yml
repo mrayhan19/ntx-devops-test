@@ -66,6 +66,7 @@ jobs:
         terraform init
         terraform import azurerm_resource_group.ntx_devops_group /subscriptions/${{ secrets.TF_VAR_SUBS_ID }}/resourceGroups/${{ vars.TF_VAR_AZURE_RESOURCE_GROUP_NAME }}
         terraform import azurerm_container_registry.ntx_devops_registries /subscriptions/${{ secrets.TF_VAR_SUBS_ID }}/resourceGroups/${{ vars.TF_VAR_AZURE_RESOURCE_GROUP_NAME }}/providers/Microsoft.ContainerRegistry/registries/${{ vars.TF_VAR_ACR_NAME }}
+        terraform import azurerm_kubernetes_cluster.ntx_aks /subscriptions/${{ secrets.TF_VAR_SUBS_ID }}/resourceGroups/${{ secrets.TF_VAR_AZURE_RESOURCE_GROUP_NAME }}/providers/Microsoft.ContainerService/managedClusters/ntx-aks
 
 
     - name: Provision ACR and AKS with Terraform
