@@ -5,7 +5,7 @@ on:
     branches: [ "feature" ]
 
 jobs:
-  test:
+  run_test:
 
     runs-on: ubuntu-latest
 
@@ -21,9 +21,9 @@ jobs:
     - run: npm install chai@4.3.7
     - run: npm test
 
-  build_oci_image:
+  build_and_push_image:
 
-    needs: [test]
+    needs: [run_test]
 
     runs-on: ubuntu-latest
 
@@ -32,7 +32,14 @@ jobs:
       GITHUB_SHA: ${{ github.sha }}
 
     steps:
-    - uses: actions/checkout@v4
+    - name: Checkout
+      uses: actions/checkout@v4
+
+    - name: Azure Login
+      uses: azure/login@v2
+      with:
+        creds: ${{ secrets.AZURE_CREDENTIALS }}
+
     - name: Build Docker OCI Image
       run: |
         SHORT_SHA=$(echo "${{env.GITHUB_SHA}}" | cut -c1-6)
@@ -41,3 +48,26 @@ jobs:
     - name: Check Docker OCI Image
       run: |
         docker images | grep ${{env.APP_NAME}}
+
+    - name: Provision ACR with Terraform
+      run: |
+        cd terraform
+        terraform init
+        terraform apply -auto-approve
+        ACR_NAME=$(terraform output -raw acr_name)
+        echo "ACR_NAME=$ACR_NAME" >> $GITHUB_ENV
+      env:
+        TF_VAR_azure_resource_group_name: ${{ vars.AZURE_RESOURCE_GROUP_NAME }}
+        TF_VAR_azure_resource_group_location: ${{ vars.AZURE_RESOURCE_GROUP_LOCATION }}
+        TF_VAR_acr_name: ${{ vars.ACR_NAME }}
+    
+    - name: Docker Login to ACR
+      run: |
+        az acr login --name $ACR_NAME
+
+    - name: Push Docker Image to ACR
+      run: |
+        IMAGE_TAG="$ACR_NAME.azurecr.io/$APP_IMAGE"
+        docker tag $APP_IMAGE $IMAGE_TAG
+        docker push $IMAGE_TAG
+        echo "IMAGE_TAG=$IMAGE_TAG" >> $GITHUB_ENV
