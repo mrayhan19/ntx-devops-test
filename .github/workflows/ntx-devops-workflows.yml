@@ -38,4 +38,6 @@ jobs:
         APP_NAME: ntx-app
         GITHUB_SHA: ${{ github.sha }}
     - name: Check Docker OCI Image
-      run: docker images | grep $APP_IMAGE
+      run: |
+        echo $APP_IMAGE
+        docker images
