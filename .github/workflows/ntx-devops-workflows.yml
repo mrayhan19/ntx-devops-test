@@ -78,7 +78,6 @@ jobs:
         terraform apply -auto-approve
         ACR_NAME=$(terraform output -raw acr_name)
         echo "ACR_NAME=$ACR_NAME" >> $GITHUB_ENV
-      continue-on-error: true
     
     - name: Docker Login to ACR
       run: |
@@ -128,6 +127,7 @@ jobs:
         kubectl apply -f kubernetes/service.yaml
         cat kubernetes/deployment.yaml
         kubectl get svc -n default && sleep 10
+      continue-on-error: true
 
     - name: Import Existing Resource Group to Terraform State
       run: |
