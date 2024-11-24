@@ -78,6 +78,7 @@ jobs:
         terraform apply -auto-approve
         ACR_NAME=$(terraform output -raw acr_name)
         echo "ACR_NAME=$ACR_NAME" >> $GITHUB_ENV
+      continue-on-error: true
     
     - name: Docker Login to ACR
       run: |
