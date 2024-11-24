@@ -67,7 +67,7 @@ data "azurerm_role_assignment" "existing_ntx_aks_role" {
 }
 
 resource "azurerm_role_assignment" "ntx_aks_role" {
-  count = length(data.azurerm_role_assignment.existing_ntx_aks_role.id) == 0 ? 1 : 0
+  count = try(length(data.azurerm_role_assignment.existing_ntx_aks_role.id), 0) == 0 ? 1 : 0
 
   principal_id        = azurerm_kubernetes_cluster.ntx_aks.identity[0].principal_id
   role_definition_name = "AcrPull"
