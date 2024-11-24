@@ -110,45 +110,9 @@ jobs:
       with:
         version: 'latest'
 
-    - name: Deploy to AKS
-      run: | 
-        cat <<EOF > deployment.yaml
-        apiVersion: apps/v1
-        kind: Deployment
-        metadata:
-          name: ntx-app
-        spec:
-          replicas: 2
-          selector:
-            matchLabels:
-              app: ntx-app
-          template:
-            metadata:
-              labels:
-                app: ntx-app
-            spec:
-              containers:
-              - name: ntx-app
-                image: ${{ env.IMAGE_TAG }}
-                ports:
-                  - containerPort: 3000
-          EOF
-
-        cat <<EOF > service.yaml
-        apiVersion: v1
-        kind: Service
-        metadata:
-          name: ntx-app-service
-        spec:
-          type: LoadBalancer
-          selector:
-            app: ntx-app
-          ports:
-          - protocol: TCP
-            port: 80
-            targetPort: 3000
-        EOF
-
-        kubectl apply -f deployment.yaml
-        kubectl apply -f service.yaml
+    - name: Deploy Application
+      run: |
+        sed -i "s|{{IMAGE_TAG}}|${{ env.IMAGE_TAG }}|g" kubernetes/deployment.yaml
+        kubectl apply -f kubernetes/deployment.yaml
+        kubectl apply -f kubernetes/service.yaml
         kubectl get svc -n default && sleep 10

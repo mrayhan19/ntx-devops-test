@@ -1,0 +1,19 @@
+  apiVersion: apps/v1
+  kind: Deployment
+  metadata:
+    name: ntx-app
+  spec:
+    replicas: 2
+    selector:
+      matchLabels:
+        app: ntx-app
+    template:
+      metadata:
+        labels:
+          app: ntx-app
+      spec:
+        containers:
+        - name: ntx-app
+          image: {{IMAGE_TAG}}
+          ports:
+            - containerPort: 3000
