@@ -24,3 +24,8 @@ logs
 
 # Environment variables
 .env*
+
+# Terraform
+terraform/*
+!terraform/main.tf
+
