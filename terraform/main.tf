@@ -66,7 +66,7 @@ resource "azurerm_role_assignment" "ntx_aks_role" {
   scope                            = azurerm_container_registry.ntx_devops_registries.id
 
   lifecycle {
-    ignore_changes = [principal_id, scope]
+    ignore_changes = [role_definition_name, principal_id, scope]
   }
 }
 
