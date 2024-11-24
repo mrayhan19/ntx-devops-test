@@ -30,9 +30,6 @@ jobs:
     env:
       APP_NAME: ntx-app
       GITHUB_SHA: ${{ github.sha }}
-      TF_VAR_azure_resource_group_name: ${{ vars.TF_VAR_AZURE_RESOURCE_GROUP_NAME }}
-      TF_VAR_azure_resource_group_location: ${{ vars.TF_VAR_AZURE_RESOURCE_GROUP_LOCATION }}
-      TF_VAR_acr_name: ${{ vars.TF_VAR_ACR_NAME }}
 
     steps:
     - name: Checkout
@@ -52,6 +49,12 @@ jobs:
       run: |
         docker images | grep ${{env.APP_NAME}}
 
+    - name: Prepare Terraform tfvars
+      run: |
+        echo "azure_resource_group_name=\"${{ vars.TF_VAR_AZURE_RESOURCE_GROUP_NAME }}\"" > terraform.tfvars
+        echo "azure_resource_group_location=\"${{ vars.TF_VAR_AZURE_RESOURCE_GROUP_LOCATION }}\"" >> terraform.tfvars
+        echo "acr_name=\"${{ vars.TF_VAR_ACR_NAME }}\"" >> terraform.tfvars
+
     - name: Provision ACR with Terraform
       run: |
         cd terraform
@@ -59,10 +62,6 @@ jobs:
         terraform apply -auto-approve
         ACR_NAME=$(terraform output -raw acr_name)
         echo "ACR_NAME=$ACR_NAME" >> $GITHUB_ENV
-#      env:
-#        TF_VAR_azure_resource_group_name: ${{ env.AZURE_RESOURCE_GROUP_NAME }}
-#        TF_VAR_azure_resource_group_location: ${{ env.AZURE_RESOURCE_GROUP_LOCATION }}
-#        TF_VAR_acr_name: ${{ env.ACR_NAME }}
     
     - name: Docker Login to ACR
       run: |
