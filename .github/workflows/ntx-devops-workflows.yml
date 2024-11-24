@@ -27,17 +27,17 @@ jobs:
 
     runs-on: ubuntu-latest
 
+    env:
+      APP_NAME: ntx-app
+      GITHUB_SHA: ${{ github.sha }}
+
     steps:
     - uses: actions/checkout@v4
     - name: Build Docker OCI Image
       run: |
-        SHORT_SHA=$(echo "${GITHUB_SHA}" | cut -c1-6)
-        docker build . --file docker/Dockerfile --tag $APP_NAME:$SHORT_SHA
-        echo "APP_IMAGE=$APP_NAME:$SHORT_SHA" >> $GITHUB_ENV
-      env:
-        APP_NAME: ntx-app
-        GITHUB_SHA: ${{ github.sha }}
+        SHORT_SHA=$(echo "${{env.GITHUB_SHA}}" | cut -c1-6)
+        docker build . --file docker/Dockerfile --tag ${{env.APP_NAME}}:$SHORT_SHA
+        echo "APP_IMAGE=${{env.APP_NAME}}:$SHORT_SHA" >> $GITHUB_ENV
     - name: Check Docker OCI Image
       run: |
-        echo $APP_NAME
-        docker images | grep $APP_NAME
+        docker images | grep ${{env.APP_NAME}}
