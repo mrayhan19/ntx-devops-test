@@ -57,9 +57,9 @@ jobs:
         ACR_NAME=$(terraform output -raw acr_name)
         echo "ACR_NAME=$ACR_NAME" >> $GITHUB_ENV
       env:
-        TF_VAR_azure_resource_group_name: ${{ vars.AZURE_RESOURCE_GROUP_NAME }}
-        TF_VAR_azure_resource_group_location: ${{ vars.AZURE_RESOURCE_GROUP_LOCATION }}
-        TF_VAR_acr_name: ${{ vars.ACR_NAME }}
+        TF_VAR_azure_resource_group_name: ${{ env.AZURE_RESOURCE_GROUP_NAME }}
+        TF_VAR_azure_resource_group_location: ${{ env.AZURE_RESOURCE_GROUP_LOCATION }}
+        TF_VAR_acr_name: ${{ env.ACR_NAME }}
     
     - name: Docker Login to ACR
       run: |
