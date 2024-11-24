@@ -51,9 +51,10 @@ jobs:
 
     - name: Prepare Terraform tfvars
       run: |
-        echo "azure_resource_group_name=\"${{ vars.TF_VAR_AZURE_RESOURCE_GROUP_NAME }}\"" > terraform.tfvars
-        echo "azure_resource_group_location=\"${{ vars.TF_VAR_AZURE_RESOURCE_GROUP_LOCATION }}\"" >> terraform.tfvars
-        echo "acr_name=\"${{ vars.TF_VAR_ACR_NAME }}\"" >> terraform.tfvars
+        echo "azure_resource_group_name=\"${{ vars.TF_VAR_AZURE_RESOURCE_GROUP_NAME }}\"" > terraform/terraform.tfvars
+        echo "azure_resource_group_location=\"${{ vars.TF_VAR_AZURE_RESOURCE_GROUP_LOCATION }}\"" >> terraform/terraform.tfvars
+        echo "acr_name=\"${{ vars.TF_VAR_ACR_NAME }}\"" >> terraform/terraform.tfvars
+        cat terraform.tfvars
 
     - name: Provision ACR with Terraform
       run: |
