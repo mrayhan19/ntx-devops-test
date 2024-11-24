@@ -28,4 +28,4 @@ logs
 # Terraform
 terraform/*
 !terraform/main.tf
-
+!terraform/variables.tf
