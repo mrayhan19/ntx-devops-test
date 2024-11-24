@@ -60,6 +60,12 @@ jobs:
         echo "azure_tenant_id=\"${{ secrets.TF_VAR_TENANT_ID }}\"" >> terraform/terraform.tfvars
         cat terraform/terraform.tfvars
 
+    - name: Import Existing Resource Group to Terraform State
+      run: |
+        cd terraform
+        terraform init
+        terraform import azurerm_resource_group.ntx_devops_group /subscriptions/${{ secrets.TF_VAR_SUBS_ID }}/resourceGroups/${{ vars.TF_VAR_AZURE_RESOURCE_GROUP_NAME }}
+
     - name: Provision ACR and AKS with Terraform
       run: |
         cd terraform
