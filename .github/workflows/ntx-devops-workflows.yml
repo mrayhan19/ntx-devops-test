@@ -30,6 +30,9 @@ jobs:
     env:
       APP_NAME: ntx-app
       GITHUB_SHA: ${{ github.sha }}
+      TF_VAR_azure_resource_group_name: ${{ vars.TF_VAR_AZURE_RESOURCE_GROUP_NAME }}
+      TF_VAR_azure_resource_group_location: ${{ vars.TF_VAR_AZURE_RESOURCE_GROUP_LOCATION }}
+      TF_VAR_acr_name: ${{ vars.TF_VAR_ACR_NAME }}
 
     steps:
     - name: Checkout
