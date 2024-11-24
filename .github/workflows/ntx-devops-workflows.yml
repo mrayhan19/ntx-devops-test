@@ -54,10 +54,10 @@ jobs:
         echo "azure_resource_group_name=\"${{ vars.TF_VAR_AZURE_RESOURCE_GROUP_NAME }}\"" > terraform/terraform.tfvars
         echo "azure_resource_group_location=\"${{ vars.TF_VAR_AZURE_RESOURCE_GROUP_LOCATION }}\"" >> terraform/terraform.tfvars
         echo "acr_name=\"${{ vars.TF_VAR_ACR_NAME }}\"" >> terraform/terraform.tfvars
-        echo "azure_subscription_id=\"${{ vars.TF_VAR_SUBS_ID }}\"" >> terraform/terraform.tfvars
-        echo "terraform_azure_client_id=\"${{ vars.TF_VAR_CLIENT_ID }}\"" >> terraform/terraform.tfvars
-        echo "terraform_azure_client_secret=\"${{ vars.TF_VAR_CLIENT_SECRET }}\"" >> terraform/terraform.tfvars
-        echo "azure_tenant_id=\"${{ vars.TF_VAR_TENANT_ID }}\"" >> terraform/terraform.tfvars
+        echo "azure_subscription_id=\"${{ secrets.TF_VAR_SUBS_ID }}\"" >> terraform/terraform.tfvars
+        echo "terraform_azure_client_id=\"${{ secrets.TF_VAR_CLIENT_ID }}\"" >> terraform/terraform.tfvars
+        echo "terraform_azure_client_secret=\"${{ secrets.TF_VAR_CLIENT_SECRET }}\"" >> terraform/terraform.tfvars
+        echo "azure_tenant_id=\"${{ secrets.TF_VAR_TENANT_ID }}\"" >> terraform/terraform.tfvars
         cat terraform/terraform.tfvars
 
     - name: Provision ACR with Terraform
