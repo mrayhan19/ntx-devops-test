@@ -60,18 +60,14 @@ resource "azurerm_kubernetes_cluster" "ntx_aks" {
 
 }
 
-data "azurerm_role_assignment" "existing_ntx_aks_role" {
-  principal_id        = azurerm_kubernetes_cluster.ntx_aks.identity[0].principal_id
-  role_definition_name = "AcrPull"
-  scope               = azurerm_container_registry.ntx_devops_registries.id
-}
-
 resource "azurerm_role_assignment" "ntx_aks_role" {
-  count = try(length(data.azurerm_role_assignment.existing_ntx_aks_role.id), 0) == 0 ? 1 : 0
+  principal_id                     = azurerm_kubernetes_cluster.ntx_aks.identity[0].principal_id
+  role_definition_name             = "AcrPull"
+  scope                            = azurerm_container_registry.ntx_devops_registries.id
 
-  principal_id        = azurerm_kubernetes_cluster.ntx_aks.identity[0].principal_id
-  role_definition_name = "AcrPull"
-  scope               = azurerm_container_registry.ntx_devops_registries.id
+  lifecycle {
+    ignore_changes = [role_definition_name, principal_id, scope]
+  }
 }
 
 # Output for AKS name
