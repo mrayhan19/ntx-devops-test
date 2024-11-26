@@ -35,7 +35,21 @@ output "acr_name" {
   value = azurerm_container_registry.ntx_devops_registries.name
 }
 
-# Setup Azure Kubernetes Registry
+output "acr_login_server" {
+  value = azurerm_container_registry.ntx_devops_registries.login_server
+}
+
+output "acr_admin_username" {
+  value     = azurerm_container_registry.ntx_devops_registries.admin_username
+  sensitive = true
+}
+
+output "acr_admin_password" {
+  value     = azurerm_container_registry.ntx_devops_registries.admin_password
+  sensitive = true
+}
+
+# Setup Azure Kubernetes Service
 resource "azurerm_kubernetes_cluster" "ntx_aks" {
   name                = "ntx-aks"
   location            = azurerm_resource_group.ntx_devops_group.location
@@ -64,6 +78,7 @@ resource "azurerm_role_assignment" "ntx_aks_role" {
   principal_id                     = azurerm_kubernetes_cluster.ntx_aks.identity[0].principal_id
   role_definition_name             = "AcrPull"
   scope                            = azurerm_container_registry.ntx_devops_registries.id
+  skip_service_principal_aad_check = true
 }
 
 # Output for AKS name
