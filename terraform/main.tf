@@ -27,7 +27,7 @@ resource "azurerm_container_registry" "ntx_devops_registries" {
   resource_group_name = azurerm_resource_group.ntx_devops_group.name
   location            = azurerm_resource_group.ntx_devops_group.location
   sku                 = "Basic"
-  admin_enabled       = true
+#  admin_enabled       = true
   depends_on = [ azurerm_resource_group.ntx_devops_group ]
 }
 

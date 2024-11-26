@@ -128,5 +128,6 @@ jobs:
         kubectl apply -f kubernetes/deployment.yaml
         kubectl apply -f kubernetes/service.yaml
         cat kubernetes/deployment.yaml
+        sleep 15
         kubectl get po -o wide
         kubectl get svc -n default
