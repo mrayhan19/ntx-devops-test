@@ -101,7 +101,6 @@ jobs:
     runs-on: ubuntu-latest
 
     env:
-      ACR_NAME: ${{ needs.build_and_push_image.outputs.image-tag }}
       IMAGE_TAG: ${{ needs.build_and_push_image.outputs.image-tag }}
 
     steps:
@@ -125,10 +124,6 @@ jobs:
     - name: Deploy Application
       run: |
         sed -i "s|{{IMAGE_TAG}}|${{env.IMAGE_TAG}}|g" kubernetes/deployment.yaml
-        kubectl create secret docker-registry acr-auth \
-        --docker-server=${{ env.ACR_NAME }}.azurecr.io \
-        --docker-username=$(az acr credential show --name ntxdevopsregistries --query "username" --output tsv) \
-        --docker-password=$(az acr credential show --name ntxdevopsregistries --query "passwords[0].value" --output tsv)
         kubectl describe secret acr-auth -n default
         kubectl apply -f kubernetes/deployment.yaml
         kubectl apply -f kubernetes/service.yaml

@@ -17,5 +17,3 @@
           image: {{IMAGE_TAG}}
           ports:
             - containerPort: 3000
-        imagePullSecrets:
-        - name: acr-auth

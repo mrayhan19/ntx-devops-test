@@ -80,7 +80,7 @@ resource "azurerm_role_assignment" "ntx_aks_role" {
   principal_id                     = azurerm_kubernetes_cluster.ntx_aks.identity[0].principal_id
   role_definition_name             = "AcrPull"
   scope                            = azurerm_container_registry.ntx_devops_registries.id
-  skip_service_principal_aad_check = true
+#  skip_service_principal_aad_check = true
 }
 
 # Output for AKS name
