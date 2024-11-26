@@ -81,6 +81,11 @@ jobs:
         terraform apply -auto-approve
         ACR_NAME=$(terraform output -raw acr_name)
         echo "ACR_NAME=$ACR_NAME" >> $GITHUB_ENV
+      env:
+        ARM_CLIENT_ID: ${{ secrets.TF_VAR_CLIENT_ID }}
+        ARM_CLIENT_SECRET: ${{ secrets.TF_VAR_CLIENT_SECRET }}
+        ARM_SUBSCRIPTION_ID: ${{ secrets.TF_VAR_SUBS_ID }}
+        ARM_TENANT_ID: ${{ secrets.TF_VAR_TENANT_ID }}
     
     - name: Docker Login to ACR
       run: |
