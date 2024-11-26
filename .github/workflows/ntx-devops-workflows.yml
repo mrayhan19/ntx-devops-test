@@ -126,7 +126,7 @@ jobs:
     - name: Deploy Application
       run: |
         sed -i "s|{{IMAGE_TAG}}|${{env.IMAGE_TAG}}|g" kubernetes/deployment.yaml
-        kubectl create secret docker-registry acr-auth \
+        kubectl create secret docker-registry acr-secret \
         --docker-server=${{env.ACR_NAME}}.azurecr.io \
         --docker-username=$(az acr credential show --name ${{env.ACR_NAME}} --query "username" --output tsv) \
         --docker-password=$(az acr credential show --name ${{env.ACR_NAME}} --query "passwords[0].value" --output tsv)
