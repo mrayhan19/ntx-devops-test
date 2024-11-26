@@ -71,7 +71,6 @@ resource "azurerm_kubernetes_cluster" "ntx_aks" {
   }
 
   depends_on = [
-    azurerm_kubernetes_cluster.ntx_aks, 
     azurerm_container_registry.ntx_devops_registries
   ]
 
