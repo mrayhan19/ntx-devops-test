@@ -34,7 +34,6 @@ jobs:
 
       - name: Build image
         run: docker build -t ${{ env.GCP_GAR_LOCATION }} .
-        working-directory: WORKING_DIRECTORY
 
       - name: Push image
         run: docker push ${{ env.GCP_GAR_LOCATION }}
