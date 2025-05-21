@@ -9,7 +9,7 @@ env:
   GCP_PROJECT_ID: "ntx-devops"
   GCP_REGION: "asia-southeast2"
   GCP_GAR_LOCATION: "asia-southeast2-docker.pkg.dev/ntx-devops/ntx-devops-repository"
-
+  IMAGE_NAME: "ntx-node-app"
 jobs:
   build:
     runs-on: ubuntu-latest
@@ -33,7 +33,7 @@ jobs:
           gcloud auth configure-docker ${{ env.GCP_REGION }}-docker.pkg.dev --quiet
 
       - name: Build image
-        run: docker build -t ${{ env.GCP_GAR_LOCATION }} .
+        run: docker build -t ${{ env.GCP_GAR_LOCATION }}/${{ env.IMAGE_NAME }}:${{ github.sha }} .
 
       - name: Push image
         run: docker push ${{ env.GCP_GAR_LOCATION }}
