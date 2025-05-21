@@ -36,4 +36,4 @@ jobs:
         run: docker build -t ${{ env.GCP_GAR_LOCATION }}/${{ env.IMAGE_NAME }}:${{ github.sha }} .
 
       - name: Push image
-        run: docker push ${{ env.GCP_GAR_LOCATION }}
+        run: docker push ${{ env.GCP_GAR_LOCATION }}/${{ env.IMAGE_NAME }}:${{ github.sha }}
