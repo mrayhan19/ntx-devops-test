@@ -12,6 +12,53 @@ env:
   IMAGE_NAME: "ntx-node-app"
   
 jobs:
+  terraform:
+    name: 'Terraform'
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        shell: bash
+        #Inform a working directory if .tf files are not in root folder
+        working-directory: ./terraform 
+    steps:
+    # Checkout the repository to the GitHub Actions runner
+    - name: Checkout
+      uses: actions/checkout@v3
+
+    # Install the latest version of Terraform CLI and configure the Terraform CLI configuration file with a Terraform Cloud user API token
+    - name: Setup Terraform
+      uses: hashicorp/setup-terraform@v1
+
+    - name: Setup terraform variables
+      id: vars
+      run: |-
+        cat > pipeline.auto.tfvars <<EOF
+        region="${{ env.GCP_REGION }}"
+        project="${{ env.GCP_PROJECT_ID }}"
+        data-project="${{ vars.GCP_DATA_PROJECT }}"
+        EOF
+        
+    # Initialize a new or existing Terraform working directory by creating initial files, loading any remote state, downloading modules, etc.
+    - name: Terraform Init
+      run: terraform init
+      env:
+        GOOGLE_CREDENTIALS: ${{ secrets.NTX_GCP_SA }} 
+
+
+    # Generates an execution plan for Terraform
+    - name: Terraform Plan
+      run: terraform plan -input=false
+      env:
+        GOOGLE_CREDENTIALS: ${{ secrets.NTX_GCP_SA }}
+
+      # On push to "feature", build or change infrastructure according to Terraform configuration files
+      # Note: It is recommended to set up a required "strict" status check in your repository for "Terraform Cloud". See the documentation on "strict" required status checks for more information: https://help.github.com/en/github/administering-a-repository/types-of-required-status-checks
+    - name: Terraform Apply
+      if: github.ref == 'refs/heads/feature' && github.event_name == 'push'
+      run: terraform apply -auto-approve -input=false
+      env:
+        GOOGLE_CREDENTIALS: ${{ secrets.NTX_GCP_SA }}
+
   build:
     runs-on: ubuntu-latest
     steps:
