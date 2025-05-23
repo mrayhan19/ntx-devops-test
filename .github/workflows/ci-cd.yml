@@ -36,24 +36,10 @@ jobs:
       with:
         terraform_version: 1.6.6
 
-    - name: Terraform Init
-      run: |
-        cd terraform
-        terraform init
-
-    - name: Terraform Import Artifact Registry
-      run: |
-        cd terraform
-        terraform import google_artifact_registry_repository.docker_repo projects/${{ secrets.NTX_GCP_PROJECT_ID }}/locations/$GCP_REGION/repositories/$GCP_REPO_NAME || true
-
-    - name: Terraform Import GKE Cluster
-      run: |
-        cd terraform
-        terraform import google_container_cluster.autopilot_cluster projects/${{ secrets.NTX_GCP_PROJECT_ID }}/locations/$GCP_REGION/clusters/autopilot-cluster || true
-
     - name: Terraform Apply
       run: |
         cd terraform
+        terraform init
         terraform apply -auto-approve \
           -var="project_id=${{ secrets.NTX_GCP_PROJECT_ID }}" \
           -var="region=$GCP_REGION" \

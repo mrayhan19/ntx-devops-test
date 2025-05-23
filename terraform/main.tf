@@ -1,4 +1,11 @@
 terraform {
+    backend "gcs" { 
+      bucket  = "ntx-gcp-terraform-state-bucket"
+      prefix  = "feature"
+    }
+}
+
+terraform {
   required_providers {
     google = {
       source  = "hashicorp/google"
@@ -18,20 +25,12 @@ resource "google_artifact_registry_repository" "docker_repo" {
   repository_id = var.repo_name
   description   = "Docker repository for app"
   format        = "DOCKER"
-
-  lifecycle {
-    ignore_changes = all
-  }
 }
 
 resource "google_container_cluster" "autopilot_cluster" {
   name               = "autopilot-cluster"
   location           = var.region
   enable_autopilot   = true
-
-  lifecycle {
-    ignore_changes = all
-  }
 }
 
 output "artifact_registry_url" {
