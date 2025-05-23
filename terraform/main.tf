@@ -1,7 +1,7 @@
 terraform {
     backend "gcs" { 
-      bucket  = "ntx-gcp-terraform-state-bucket"
-      prefix  = "feature"
+      bucket  = "ntx-gcp-tf-state-bucket"
+      prefix  = "state"
     }
 }
 
@@ -9,7 +9,7 @@ terraform {
   required_providers {
     google = {
       source  = "hashicorp/google"
-      version = "~> 5.0"
+      version = "~> 6.16"
     }
   }
   required_version = ">= 1.3"
