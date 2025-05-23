@@ -1,23 +1,16 @@
-locals {
-    labels = {
-        "data-project" = var.data-project
-    }
-}
-
-variable "project" {
-    type= string
-    description = "ID Google project"
-    default = "ntx-devops"
+variable "project_id" {
+  description = "GCP Project ID"
+  type        = string
 }
 
 variable "region" {
-    type= string
-    description = "Region Google project"
-    default = "asia-southeast2"
+  description = "GCP Region (e.g. us-central1)"
+  type        = string
+  default     = "asia-southeast2"
 }
 
-variable "data-project" {
-    type = string
-    description = "Name of data pipeline project to use as resource prefix"
-    default = "NTX-DEVOPS"
+variable "repo_name" {
+  description = "Name of the Artifact Registry Docker repo"
+  type        = string
+  default     = "app-repo"
 }

@@ -2,3 +2,6 @@
 .gitignore
 Dockerfile
 README.md
+terraform
+ci-cd.yml
+k8s

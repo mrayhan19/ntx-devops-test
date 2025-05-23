@@ -1,0 +1,19 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: REPLACE_APP
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: REPLACE_APP
+  template:
+    metadata:
+      labels:
+        app: REPLACE_APP
+    spec:
+      containers:
+      - name: REPLACE_APP
+        image: REPLACE_IMAGE
+        ports:
+        - containerPort: 8000
