@@ -10,7 +10,7 @@ env:
   GCP_REGION: asia-southeast2
   GCP_REPO_NAME: ntx-app-repo
   DOCKER_IMAGE_NAME: ntx-node-app
-  APP_NAME: $DOCKER_IMAGE_NAME
+  APP_NAME: ntx-app
   
 jobs:
   infra:
@@ -36,14 +36,28 @@ jobs:
       with:
         terraform_version: 1.6.6
 
-    - name: GCP Infra Terraform
+    - name: Terraform Init
       run: |
         cd terraform
         terraform init
+
+    - name: Terraform Import Artifact Registry
+      run: |
+        cd terraform
+        terraform import google_artifact_registry_repository.docker_repo projects/${{ secrets.NTX_GCP_PROJECT_ID }}/locations/$GCP_REGION/repositories/$GCP_REPO_NAME || true
+
+    - name: Terraform Import GKE Cluster
+      run: |
+        cd terraform
+        terraform import google_container_cluster.autopilot_cluster projects/${{ secrets.NTX_GCP_PROJECT_ID }}/locations/$GCP_REGION/clusters/autopilot-cluster || true
+
+    - name: Terraform Apply
+      run: |
+        cd terraform
         terraform apply -auto-approve \
           -var="project_id=${{ secrets.NTX_GCP_PROJECT_ID }}" \
           -var="region=$GCP_REGION" \
-          -var="repo_name=$GCP_REPO_NAME" \
+          -var="repo_name=$GCP_REPO_NAME"
 
   build:
     name: Build and Push Docker Image
@@ -77,7 +91,9 @@ jobs:
     runs-on: ubuntu-latest
     needs: build
 
-    env: IMAGE_URI=$GCP_REGION-docker.pkg.dev/${{ secrets.NTX_GCP_PROJECT_ID }}/$GCP_REPO_NAME/$DOCKER_IMAGE_NAME:latest
+    env:
+      IMAGE_URI: $GCP_REGION-docker.pkg.dev/${{ secrets.NTX_GCP_PROJECT_ID }}/$GCP_REPO_NAME/$DOCKER_IMAGE_NAME:latest
+      APP_NAME: $DOCKER_IMAGE_NAME
 
     steps:
     - uses: actions/checkout@v4
@@ -120,7 +136,6 @@ jobs:
           echo "Waiting for LB IP..."
           sleep 10
         done
-
     outputs:
       url: ${{ steps.wait_lb.outputs.url }}
 
