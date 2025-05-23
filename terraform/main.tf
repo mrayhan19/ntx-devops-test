@@ -21,9 +21,9 @@ resource "google_artifact_registry_repository" "docker_repo" {
 }
 
 resource "google_container_cluster" "autopilot_cluster" {
-  name     = "autopilot-cluster"
-  location = var.region
-  autopilot {}
+  name               = "autopilot-cluster"
+  location           = var.region
+  enable_autopilot   = true
 }
 
 output "artifact_registry_url" {
