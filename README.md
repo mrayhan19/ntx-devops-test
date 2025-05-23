@@ -1,3 +1,8 @@
+# REQUIRED MANUAL SETUP:
+- GCP Service Account with editor Role
+- GCS Bucket to store terraform state
+- Enable Artifact Registry API, and Kubernetes Engine API
+
 # DevOps Engineer - Technical Test
 
 Welcome to the DevOps Engineer Technical Test! This exercise assesses your ability to create automated infrastructure and CI/CD pipelines while adhering to modern DevOps methodologies.
