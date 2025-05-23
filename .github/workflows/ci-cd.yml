@@ -107,7 +107,7 @@ jobs:
       run: |
         sed -i "s|REPLACE_IMAGE|$IMAGE_URI|g" k8s/deployment.yaml
         sed -i "s|REPLACE_APP|$APP_NAME|g" k8s/deployment.yaml
-        sed -i "s|REPLACE_APP|$APP_NAME|g" k8s/serice.yaml
+        sed -i "s|REPLACE_APP|$APP_NAME|g" k8s/service.yaml
 
     - name: Apply Kubernetes manifests
       run: |
