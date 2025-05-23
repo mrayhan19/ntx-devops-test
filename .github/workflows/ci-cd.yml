@@ -39,7 +39,7 @@ jobs:
     - name: Terraform Apply
       run: |
         cd terraform
-        terraform init
+        terraform init --upgrade
         terraform apply -auto-approve \
           -var="project_id=${{ secrets.NTX_GCP_PROJECT_ID }}" \
           -var="region=$GCP_REGION" \
