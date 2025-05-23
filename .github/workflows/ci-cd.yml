@@ -111,6 +111,9 @@ jobs:
           sleep 10
         done
 
+    outputs:
+      url: ${{ steps.wait_lb.outputs.url }}
+
   curl-test:
     needs: deploy
     runs-on: ubuntu-latest
