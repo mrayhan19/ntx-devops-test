@@ -20,12 +20,15 @@ jobs:
     - name: Checkout
       uses: actions/checkout@v4
 
+    - name: Authenticate to Google Cloud
+      uses: google-github-actions/auth@v1
+      with:
+        credentials_json: '${{ secrets.NTX_GCP_SA }}'
+
     - name: Set up Cloud SDK
       uses: google-github-actions/setup-gcloud@v1
       with:
         project_id: ${{ secrets.NTX_GCP_PROJECT_ID }}
-        service_account_key: ${{ secrets.NTX_GCP_SA }}
-        export_default_credentials: true
 
     - name: Set up Terraform
       uses: hashicorp/setup-terraform@v2
@@ -49,12 +52,15 @@ jobs:
     steps:
     - uses: actions/checkout@v4
 
-    - name: Set up gcloud
+    - name: Authenticate to Google Cloud
+      uses: google-github-actions/auth@v1
+      with:
+        credentials_json: '${{ secrets.NTX_GCP_SA }}'
+
+    - name: Set up Cloud SDK
       uses: google-github-actions/setup-gcloud@v1
       with:
         project_id: ${{ secrets.NTX_GCP_PROJECT_ID }}
-        service_account_key: ${{ secrets.NTX_GCP_SA }}
-        export_default_credentials: true
 
     - name: Authenticate Docker to Artifact Registry
       run: gcloud auth configure-docker $GCP_REGION-docker.pkg.dev
@@ -78,14 +84,12 @@ jobs:
     - name: Authenticate to Google Cloud
       uses: google-github-actions/auth@v1
       with:
-        credentials_json: ${{ secrets.NTX_GCP_SA }}
+        credentials_json: '${{ secrets.NTX_GCP_SA }}'
 
-    - name: Set up gcloud
-      uses: google-github-actions/setup-gcloud@v2
+    - name: Set up Cloud SDK
+      uses: google-github-actions/setup-gcloud@v1
       with:
         project_id: ${{ secrets.NTX_GCP_PROJECT_ID }}
-        service_account_key: ${{ secrets.NTX_GCP_SA }}
-        export_default_credentials: true
 
     - name: Get GKE credentials
       run: |
@@ -137,14 +141,12 @@ jobs:
       - name: Authenticate to Google Cloud
         uses: google-github-actions/auth@v1
         with:
-          credentials_json: ${{ secrets.NTX_GCP_SA }}      
+          credentials_json: '${{ secrets.NTX_GCP_SA }}'
 
-      - name: Set up gcloud
-        uses: google-github-actions/setup-gcloud@v2
+      - name: Set up Cloud SDK
+        uses: google-github-actions/setup-gcloud@v1
         with:
           project_id: ${{ secrets.NTX_GCP_PROJECT_ID }}
-          service_account_key: ${{ secrets.NTX_GCP_SA }}
-          export_default_credentials: true
 
       - name: Set up Terraform
         uses: hashicorp/setup-terraform@v2
