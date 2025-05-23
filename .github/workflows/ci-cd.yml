@@ -146,6 +146,6 @@ jobs:
           cd terraform
           terraform init
           terraform destroy -auto-approve \
-            -var="project_id=${{ secrets.GCP_PROJECT_ID }}" \
+            -var="project_id=${{ secrets.NTX_GCP_PROJECT_ID }}" \
             -var="region=$GCP_REGION" \
             -var="repo_name=$GCP_REPO_NAME"
