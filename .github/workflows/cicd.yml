@@ -4,7 +4,6 @@ on:
   push:
     branches:
       - feature
-  workflow_dispatch:
 
 env:
   GCP_REGION: asia-southeast2
