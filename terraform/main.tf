@@ -31,6 +31,7 @@ resource "google_container_cluster" "autopilot_cluster" {
   name               = "autopilot-cluster"
   location           = var.region
   enable_autopilot   = true
+  deletion_protection = false
 }
 
 output "artifact_registry_url" {
