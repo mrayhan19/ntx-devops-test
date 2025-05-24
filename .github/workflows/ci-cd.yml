@@ -105,7 +105,7 @@ jobs:
 
     - name: Set Image in deployment manifest
       run: |
-        sed -i "s|REPLACE_IMAGE|$IMAGE_URI|g" k8s/deployment.yaml
+        sed -i "s|REPLACE_IMAGE|$GCP_REGION-docker.pkg.dev/${{ secrets.NTX_GCP_PROJECT_ID }}/$GCP_REPO_NAME/$DOCKER_IMAGE_NAME|g" k8s/deployment.yaml
         sed -i "s|REPLACE_APP|$APP_NAME|g" k8s/deployment.yaml
         sed -i "s|REPLACE_APP|$APP_NAME|g" k8s/service.yaml
 
