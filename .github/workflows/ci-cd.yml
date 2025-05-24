@@ -46,7 +46,7 @@ jobs:
           -var="repo_name=$GCP_REPO_NAME"
 
   build:
-    name: Build and Push Docker Image
+    name: Build Image & Push
     runs-on: ubuntu-latest
     needs: infra
 
