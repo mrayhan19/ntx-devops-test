@@ -1,0 +1,40 @@
+name: GCP Terraform Destroy
+
+on:
+  workflow_dispatch:
+
+env:
+  GCP_REGION: asia-southeast2
+  GCP_REPO_NAME: ntx-app-repo
+  DOCKER_IMAGE_NAME: ntx-node-app
+  APP_NAME: ntx-app
+
+jobs:
+  destroy:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Authenticate to Google Cloud
+        uses: google-github-actions/auth@v1
+        with:
+          credentials_json: '${{ secrets.NTX_GCP_SA }}'
+
+      - name: Set up Cloud SDK
+        uses: google-github-actions/setup-gcloud@v1
+        with:
+          project_id: ${{ secrets.NTX_GCP_PROJECT_ID }}
+
+      - name: Set up Terraform
+        uses: hashicorp/setup-terraform@v2
+        with:
+          terraform_version: 1.6.6
+
+      - name: Terraform Destroy
+        run: |
+          cd terraform
+          terraform init
+          terraform destroy -auto-approve \
+            -var="project_id=${{ secrets.NTX_GCP_PROJECT_ID }}" \
+            -var="region=$GCP_REGION" \
+            -var="repo_name=$GCP_REPO_NAME"
