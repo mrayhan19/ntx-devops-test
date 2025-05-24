@@ -1,6 +1,9 @@
 name: GCP Terraform Destroy
 
 on:
+  push:
+    branches:
+      - feature
   workflow_dispatch:
 
 env:
